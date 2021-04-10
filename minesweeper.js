@@ -7,10 +7,9 @@ const TILE_STATUSES = {
     MARKED: 'marked'
 }
 
-
-
 export function createBoard(boardsize, numberOfMines) {
     const board = []
+    const minePositions = getMinePositions(boardsize, numberOfMines)
     for (let x = 0; x < boardsize; x++) {
         const row = []
         for (let y = 0; y < boardsize; y++) {
@@ -19,11 +18,44 @@ export function createBoard(boardsize, numberOfMines) {
             const tile = {
                 element,
                 x, 
-                y
+                y,
+                mine: minePositions.some(positionMatch.bind(null, {x,y})),
+                get status() {
+                    return this.element.dataset.status
+                },
+                set status(value) {
+                    this.element.dataset.status = value
+                }
             }
             row.push(tile)
         }
         board.push(row)
     }
     return board
+}
+
+function getMinePositions(boardsize, numberOfMines) {
+    const positions = []
+    while (positions.length < numberOfMines) {
+        const position = {
+            x: randomNumber(boardsize),
+            y: randomNumber(boardsize)
+        }
+        if (!positions.some(p => positionMatch(p, position))) { //does this position already exist, if not false, push to positions array
+            positions.push(position)
+        }
+    }
+
+    
+
+    return positions
+}
+
+function randomNumber(size) {
+    return Math.floor(Math.random() * size)  // makes a random number and multiplies by size.  .floor() turns it into an integer
+}
+
+function positionMatch(a,b) { // takes two positions: a,b and see if they have the same coordinates.  if both x and y matche, return true
+    return a.x === b.x && a.y === b.y
+
 }
