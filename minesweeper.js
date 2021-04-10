@@ -1,6 +1,6 @@
 ///  game logic
 
-const TILE_STATUSES = {
+export const TILE_STATUSES = {
     HIDDEN: 'hidden',
     MINE: 'mine',
     NUMBER: 'number',
@@ -58,4 +58,15 @@ function randomNumber(size) {
 function positionMatch(a,b) { // takes two positions: a,b and see if they have the same coordinates.  if both x and y matche, return true
     return a.x === b.x && a.y === b.y
 
+}
+
+export function markTile(tile) {
+    if (tile.status !== TILE_STATUSES.HIDDEN && tile.status !== TILE_STATUSES.MARKED){
+        return
+    }
+    if (tile.status === TILE_STATUSES.MARKED) {
+        tile.status = TILE_STATUSES.HIDDEN
+    } else {
+        tile.status = TILE_STATUSES.MARKED
+    }
 }
