@@ -76,7 +76,8 @@ export function revealTile(board, tile) {
     if (tile.status !== TILE_STATUSES.HIDDEN) {
         return
     }
-    if (tile.status === TILE_STATUSES.MINE) {
+    if (tile.mine) {
+        tile.status = TILE_STATUSES.MINE
         return
     }
     tile.status = TILE_STATUSES.NUMBER
