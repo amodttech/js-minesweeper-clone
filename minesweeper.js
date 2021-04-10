@@ -34,32 +34,6 @@ export function createBoard(boardsize, numberOfMines) {
     return board
 }
 
-function getMinePositions(boardsize, numberOfMines) {
-    const positions = []
-    while (positions.length < numberOfMines) {
-        const position = {
-            x: randomNumber(boardsize),
-            y: randomNumber(boardsize)
-        }
-        if (!positions.some(p => positionMatch(p, position))) { //does this position already exist, if not false, push to positions array
-            positions.push(position)
-        }
-    }
-
-    
-
-    return positions
-}
-
-function randomNumber(size) {
-    return Math.floor(Math.random() * size)  // makes a random number and multiplies by size.  .floor() turns it into an integer
-}
-
-function positionMatch(a,b) { // takes two positions: a,b and see if they have the same coordinates.  if both x and y matche, return true
-    return a.x === b.x && a.y === b.y
-
-}
-
 export function markTile(tile) {
     if (tile.status !== TILE_STATUSES.HIDDEN && tile.status !== TILE_STATUSES.MARKED){
         return
@@ -69,7 +43,6 @@ export function markTile(tile) {
     } else {
         tile.status = TILE_STATUSES.MARKED
     }
-    console.log(`tile`, tile)
 }
 
 export function revealTile(board, tile) {
@@ -90,6 +63,45 @@ export function revealTile(board, tile) {
     }
 }
 
+export function checkWin(board){
+     return board.every(row => {
+         return row.every(tile => {
+             return tile.status === TILE_STATUSES.NUMBER ||
+             (tile.mine && (tile.status === TILE_STATUSES.HIDDEN || tile.status === TILE_STATUSES.MARKED))
+         })
+     })
+}
+
+export function checkLose(board) {
+    return board.some(row => {
+        return row.some(tile => {
+            return tile.status === TILE_STATUSES.MINE
+        })
+    })
+}
+
+function getMinePositions(boardsize, numberOfMines) {
+    const positions = []
+    while (positions.length < numberOfMines) {
+        const position = {
+            x: randomNumber(boardsize),
+            y: randomNumber(boardsize)
+        }
+        if (!positions.some(p => positionMatch(p, position))) { //does this position already exist, if not false, push to positions array
+            positions.push(position)
+        }
+    }
+    return positions
+}
+
+function positionMatch(a,b) { // takes two positions: a,b and see if they have the same coordinates.  if both x and y matche, return true
+    return a.x === b.x && a.y === b.y
+}
+
+function randomNumber(size) {
+    return Math.floor(Math.random() * size)  // makes a random number and multiplies by size.  .floor() turns it into an integer
+}
+
 function nearbyTiles(board, {x,y}) {
     const tiles = []
     for (let xOffset = -1; xOffset <= 1; xOffset++) {
@@ -99,12 +111,4 @@ function nearbyTiles(board, {x,y}) {
         }
     }
     return tiles
-}
-
-export function checkWin(board){
-     
-}
-
-export function checkLose(board) {
-    return true
 }

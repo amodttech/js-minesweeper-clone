@@ -1,25 +1,8 @@
 /// display/UI
-
-
-
-// 1. populate board with tiles/mines
-
-
-//2. left click on tiles 
-    // a. reveal tiles
-
-
-//3. right click on tiles
-    //a. mark tiles
-
-
-//4. check for win/lose
-
 import {createBoard, markTile, TILE_STATUSES, revealTile, checkWin, checkLose} from "./minesweeper.js"
 
 const BOARD_SIZE = 10
 const NUMBER_OF_MINES = 4
-
 
 const board = createBoard(BOARD_SIZE, NUMBER_OF_MINES)
 const boardElement = document.querySelector(".board")
@@ -78,3 +61,18 @@ function stopProp(e){
 }
 
 console.log(`board`, board)
+
+
+
+
+///  Program Process
+
+// 1. populate board with tiles/mines
+
+// 2. left click on tiles 
+    // a. reveal tiles
+
+// 3. right click on tiles
+    //a. mark tiles
+
+// 4. check for win/lose
